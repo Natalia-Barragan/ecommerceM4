@@ -5,15 +5,15 @@ import { ProductsRepository } from './products.repository';
 @Injectable()
 export class ProductsService {
   constructor(private readonly productsRepository: ProductsRepository) {}
-  getProducts() {
-    return this.productsRepository.getAllProducts();
+  getProducts(page: number, limit: number) {
+    return this.productsRepository.getAllProducts(page, limit);
   }
   getProductById(id: string) {
     return this.productsRepository.getProductById(id);
   }
 
-  createProduct(product: any) {
-    return this.productsRepository.createProduct(product);
+  createProduct() {
+    return this.productsRepository.createProduct();
   }
 
   updateProduct(id: string, product: any) {
