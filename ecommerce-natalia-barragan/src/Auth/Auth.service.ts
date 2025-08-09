@@ -11,7 +11,7 @@ export class AuthService {
     signIn(email: string, password: string) {
     if (!email || !password) return 'Credenciales incorrectas';
     const user = this.userRepository.getUserByEmail(email);
-    if (!user || user.password !== password) return 'Credenciales incorrectas';
+    //if (!user || user.password !== password) return 'Credenciales incorrectas';
     return `Usuario ${email} logueado (token)`;
   }
 }

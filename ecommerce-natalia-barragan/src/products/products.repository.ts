@@ -133,7 +133,7 @@ export class ProductsRepository {
           .insert()
           .into(Products)
           .values(product)
-          .orUpdate(['description', 'price', 'image', 'stock'], ['name'])
+          .orUpdate(['description', 'price', 'imgUrl', 'stock'], ['name'])
           .execute();
         })
       );
