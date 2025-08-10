@@ -31,10 +31,14 @@ export class UsersRepository {
     return userNoPassword;
   }
 
-  async addUser(user: Users) {
+  async addUser(user: Partial<Users>) {
     const newUser = await this.userRepository.save(user);
-    const {password, ...userNoPassword} = newUser;
+    const dbUser = await this.userRepository.findOneBy({ id: newUser.id });
+    if(!dbUser) throw new Error('No se encontro el usuario');
+
+    const { password, ...userNoPassword} = newUser;
     return userNoPassword;
+
   }
 
   async updateUser(id: string, user: Partial<Users>) {
@@ -53,8 +57,9 @@ export class UsersRepository {
     return userNoPassword;
   }
 
-  getUserByEmail(email: string) {
-    throw new Error('Method not implemented.');
+  async getUserByEmail(email: string) {
+    return await this.userRepository.findOneBy({ email });
   }
+  
 
 }

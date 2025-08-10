@@ -20,12 +20,12 @@ export class UsersController {
     return this.usersService.getUserById(id);
   }
 
-  @HttpCode(201)
+/* 
   @Post()
   addUser(@Body() user: CreateUserDto){
     return this.usersService.addUser(user);
   }
-
+ */
   @Put(':id')
   @UseGuards(AuthGuard)
   updateUser(@Param('id', ParseUUIDPipe) id: string, @Body() user: UpdateUserDto){

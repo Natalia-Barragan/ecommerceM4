@@ -17,6 +17,7 @@ export class ProductsController {
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard)
   getProduct(@Param('id', ParseUUIDPipe) id: string) {
     return this.productsService.getProductById(id);
   }
