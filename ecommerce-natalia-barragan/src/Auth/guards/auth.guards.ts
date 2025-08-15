@@ -1,12 +1,9 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import ENV from "config/environment";
+import ENV from "src/config/environment";
 import { Observable } from "rxjs";
+import { Role } from "../roles.enum";
 
-/* function validate(request: Request){
-    console.log(request.headers);
-    return true;
-} */
 @Injectable()
 export class AuthGuard implements CanActivate{
 
@@ -23,6 +20,9 @@ export class AuthGuard implements CanActivate{
             const payload = this.jwtService.verify(token, { secret });
 
             payload.exp = new Date(payload.exp * 1000);
+
+            payload.roles = payload.isAdmin ? [Role.Admin] : [Role.User];
+
             request.user = payload;
 
             return true;

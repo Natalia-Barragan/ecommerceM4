@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 
 @Controller('categories')
@@ -10,7 +10,7 @@ export class CategoriesController {
     return this.categoriesService.getCategories();
   }
 
-  @Get('seeder')
+  @Post('seeder')
   addCategories() {
     return this.categoriesService.addCategories();
   }

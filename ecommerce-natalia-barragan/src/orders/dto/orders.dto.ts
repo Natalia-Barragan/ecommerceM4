@@ -1,4 +1,3 @@
-// src/orders/dto/create-order.dto.ts
 import {
   IsArray,
   ArrayMinSize,
@@ -8,22 +7,34 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
-// DTO para cada producto dentro de la orden
 export class ProductRefDto {
+  /**
+   * UUID v4 generado por BD
+  */
   @IsNotEmpty()
   @IsUUID()
   id: string;
 }
 
-// DTO para crear la orden
 export class CreateOrderDto {
+
+  /**
+   * UUID v4 generado por BD en User
+  */
   @IsNotEmpty()
   @IsUUID()
   userId: string;
 
+  /**
+   * Array de productos
+   * @example '[
+      { id: '52797d63-76c4-4eeb-88b4-a1e4df5d6803' },
+      { id: '1d2c3b4a-5e6f-7a89-b0c1-2d3e4f5a6b7c' },
+    ]'
+   */
   @IsArray()
-  @ArrayMinSize(1) // mínimo 1 producto
-  @ValidateNested({ each: true }) // valida cada objeto
-  @Type(() => ProductRefDto) // transforma cada item a ProductRefDto
+  @ArrayMinSize(1) 
+  @ValidateNested({ each: true }) 
+  @Type(() => ProductRefDto) 
   products: ProductRefDto[];
 }

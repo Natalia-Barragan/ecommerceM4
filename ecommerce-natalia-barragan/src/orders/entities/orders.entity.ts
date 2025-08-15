@@ -4,9 +4,16 @@ import { Users } from "src/users/entities/user.entity";
 
 @Entity({name: 'ORDERS',})
 export class Orders {
+    /**
+     * UUID v4 generado por BD
+    */
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
+    /**
+     * Fecha en formato dd/mm/yyyy
+     * @example '13/08/2025'
+     */
     @Column()
     date: Date;
 

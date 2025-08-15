@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Products } from "./entities/products.entity";
-import { Categories } from "src/entities/categories.entity";
+import { Categories } from "src/categories/categories.entity";
 import { Repository } from "typeorm";
 import * as data from "src/utils/data.json";
 
@@ -106,7 +106,7 @@ export class ProductsRepository {
     });
     const start = (page - 1) * limit;
     const end = start + limit;
-    const productsList = products.slice(start, end);// el slice tiene en cuenta el primer elemento pero no el ultimo
+    const productsList = products.slice(start, end);
     return productsList;
     }
     async getProductById(id: string) {
@@ -139,12 +139,12 @@ export class ProductsRepository {
       );
       return 'Productos agregados';
     }
-    deleteProduct(id: string) {
+ /*    async deleteProduct(id: string) {
       const index = products.findIndex(p => p.id === id);
       if (index === -1) return `No se encontro al producto con id ${id}`;
       products.splice(index, 1);
-    }
-    async updateProduct(id: string, product: Products) {
+    } */
+    async updateProduct(id: string, product: Partial<Products>) {
       await this.productsRepository.update(id, product);
       const updatedProduct = await this.productsRepository.findOneBy({ id });
       return updatedProduct;

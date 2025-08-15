@@ -18,7 +18,7 @@ export class FileUploadService {
 
         const response = await this.fileUploadRepository.uploadImage(file);
 
-        if(!response.secure_url) throw new NotFoundException('error al cargar la imagen');
+        if(!response.secure_url) throw new NotFoundException('error al cargar la imagen' + response);
     
         await this.productsRepository.update({ id: productId }, { imgUrl: response.secure_url, });
         

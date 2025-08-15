@@ -1,14 +1,17 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, ParseUUIDPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthGuard } from 'src/Auth/guards/auth.guards';
-import { CreateUserDto, UpdateUserDto } from './dtos/user.dto';
-import { Users } from './entities/user.entity';
+import { UpdateUserDto } from './dtos/user.dto';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/Auth/roles.enum';
+import { RolesGuard } from 'src/Auth/guards/roles.guard';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()  
-  @UseGuards(AuthGuard)
+  @Roles(Role.Admin)
+  @UseGuards(AuthGuard, RolesGuard)
   getUsers(@Query('page') page: string, @Query('limit') limit: string) {
     if (page && limit) return this.usersService.getUsers(Number(page), Number(limit));
     return this.usersService.getUsers(1, 5);

@@ -8,9 +8,15 @@ import { Products } from "../../products/entities/products.entity";
 
 export class OrderDetails {
 
+    /**
+     * UUID v4 generado por BD
+    */
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
+    /**
+     * Debe ser un número con 2 decimales (precision 10,2).
+     */
     @Column({
         type: 'decimal',
         precision: 10,
