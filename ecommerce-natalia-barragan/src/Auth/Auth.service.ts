@@ -1,5 +1,4 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { ProductsModule } from 'src/products/products.module';
 import { Users } from 'src/users/entities/user.entity';
 import { UsersRepository } from 'src/users/users.repository';
 import * as bcrypt from 'bcrypt'
@@ -11,12 +10,12 @@ export class AuthService {
   getAuth() {
     return 'Autenticacion';
   }
-    async signIn(email: string, password: string) {
-    
+    async signIn(email: string, password: string ) {
+
     const foundUser = await this.userRepository.getUserByEmail(email);
 
-      console.log('foundUser', foundUser);
-  console.log('stored password hash', foundUser?.password);
+    console.log('foundUser', foundUser);
+    console.log('stored password hash', foundUser?.password);
 
     if (!foundUser) throw new BadRequestException('Credenciales incorrectas');
 
@@ -25,8 +24,8 @@ export class AuthService {
     if(!validPassword) throw new BadRequestException('Credenciales incorrectas');
 
     const payload = { id: foundUser.id, email: foundUser.email, isAdmin: foundUser.isAdmin };
-
     const token = this.jwtService.sign(payload);
+   
     return {
       message: 'Bienvenido',
       token,

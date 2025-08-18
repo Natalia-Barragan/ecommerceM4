@@ -1,6 +1,6 @@
 import { ApiHideProperty } from "@nestjs/swagger";
 import { IsEmpty, IsNumber, IsOptional, IsString, Min, MinLength } from "class-validator";
-import { Categories } from "src/categories/categories.entity";
+import { Categories } from "src/categories/entities/categories.entity";
 
 export class UpDateProductDto {
 
@@ -19,6 +19,7 @@ export class UpDateProductDto {
 
     /**
      * Debe ser un numero mayor o igual a 0 
+     * @example 99.99
      */    
     @IsNumber()
     @IsOptional()
@@ -27,6 +28,7 @@ export class UpDateProductDto {
 
     /**
      * Debe ser un numero mayor o igual a 0
+     * @example 10
      */
     @IsNumber()
     @IsOptional()

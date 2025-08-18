@@ -5,6 +5,7 @@ import { Products } from './entities/products.entity';
 
 @Injectable()
 export class ProductsService {
+
   constructor(private readonly productsRepository: ProductsRepository) {}
   getProducts(page: number, limit: number) {
     return this.productsRepository.getAllProducts(page, limit);
@@ -21,8 +22,8 @@ export class ProductsService {
     return this.productsRepository.updateProduct(id, product);
   }
 
-  /* deleteProduct(id: string) {
+  deleteProduct(id: string) {
     return this.productsRepository.deleteProduct(id);
-  } */
+  }
 }
 

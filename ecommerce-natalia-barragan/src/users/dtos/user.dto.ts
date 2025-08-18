@@ -65,7 +65,7 @@ export class CreateUserDto{
 
    /**
    * Debe ser un número
-   * @example '54 11 1234 5678'
+   * @example '1112345678'
    */
     @IsNotEmpty()
     @IsNumber()
@@ -81,7 +81,7 @@ export class CreateUserDto{
     
     /**
      * Debe tener entre 5 y 20 caracteres
-     * @example 'La Plata, Buenos Aires!'
+     * @example 'La Plata, Bs As!'
      */
     @MinLength(5)
     @MaxLength(20)
@@ -159,7 +159,6 @@ export class UpdateUserDto {
 }
 
 export class LoginUserDto {
-
   /**
    * Debe ser un email de formato válido y con un max de 50 caracteres
    * @example 'Test.user@example.com'

@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, InternalServerErrorException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Users } from "./entities/user.entity";
 import { Repository } from "typeorm";
@@ -26,17 +26,19 @@ export class UsersRepository {
         orders: true,
       },
     });
-    if(!user) return `No se encontro al usuario con id ${id}`;
+    if(!user) throw new BadRequestException(`No se encontro al usuario con id ${id}`);
     const { password, ...userNoPassword } = user;
     return userNoPassword;
   }
 
   async addUser(user: Partial<Users>) {
-    const newUser = await this.userRepository.save(user);
-    const dbUser = await this.userRepository.findOneBy({ id: newUser.id });
-    if(!dbUser) throw new Error('No se encontro el usuario');
+    const { confirmPassword, isAdmin, ...rest } = user as any;
 
-    const { password, ...userNoPassword} = newUser;
+    const newUser = await this.userRepository.save({...rest});
+    const dbUser = await this.userRepository.findOneBy({ id: newUser.id });
+    if(!dbUser) throw new InternalServerErrorException('No se encontro el usuario');
+
+    const { password, isAdmin: _admin, ...userNoPassword} = dbUser;
     return userNoPassword;
 
   }
@@ -44,18 +46,19 @@ export class UsersRepository {
   async updateUser(id: string, user: Partial<Users>) {
     await this.userRepository.update(id, user);
     const updatedUser = await this.userRepository.findOneBy({ id });
-    if (!updatedUser) throw new Error(`No se encontro al usuario con id ${id}`);
+    if (!updatedUser) throw new BadRequestException(`No se encontro al usuario con id ${id}`);
     const { password, ...userNoPassword } = updatedUser;
     return userNoPassword;
   }
 
   async deleteUser(id: string) {
     const user = await this.userRepository.findOneBy({ id });
-    if (!user) throw new Error(`No se encontro al usuario con id ${id}`);
+    if (!user) throw new BadRequestException(`No se encontro al usuario con id ${id}`);
     await this.userRepository.delete(id);
     const { password, ...userNoPassword } = user;
     return userNoPassword;
   }
+
 
   async getUserByEmail(email: string) {
     return await this.userRepository.findOneBy({ email });

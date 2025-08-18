@@ -6,6 +6,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);  
+  app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
   .setTitle('Proyecto Integrador M4-Natalia Barragan')
@@ -14,10 +15,7 @@ async function bootstrap() {
   .addBearerAuth()
   .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-
   SwaggerModule.setup('api', app, documentFactory);
-
-  app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(ENV.PORT ?? 3000);
 }
