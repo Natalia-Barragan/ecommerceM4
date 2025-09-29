@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseUUIDPipe, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, UseGuards } from "@nestjs/common";
 import { OrderService } from "./orders.service";
 import { CreateOrderDto } from "./dto/orders.dto";
 import { AuthGuard } from "src/Auth/guards/auth.guards";
@@ -21,5 +21,10 @@ export class OrdersController {
     @UseGuards(AuthGuard)
     getOrder(@Param('id', ParseUUIDPipe) id: string) {
         return this.orderService.getOrder(id);
+    }
+
+    @Delete(':id')
+    deleteOrder(@Param('id', ParseUUIDPipe) id: string) {
+        return this.orderService.deleteOrder(id);
     }
 }

@@ -12,4 +12,9 @@ export class OrderService{
     getOrder(id: string) {
         return this.OrdersRepository.getOrder(id);
     }
+
+    
+    deleteOrder(id: string) {
+        return this.OrdersRepository.deleteOrder(id);
+    }
 }

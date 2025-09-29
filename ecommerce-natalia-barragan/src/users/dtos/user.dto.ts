@@ -1,5 +1,5 @@
 import { ApiHideProperty } from "@nestjs/swagger";
-import { IsEmail, IsEmpty, IsNotEmpty, IsNumber, IsOptional, IsString, IsStrongPassword, MaxLength, MinLength, Validate } from "class-validator";
+import { IsDateString, isDateString, IsEmail, IsEmpty, IsNotEmpty, IsNumber, IsOptional, IsString, IsStrongPassword, MaxLength, MinLength, Validate } from "class-validator";
 import { MatchPassword } from "src/decorators/matchPassword.decorator";
 import { Orders } from "src/orders/entities/orders.entity";
 

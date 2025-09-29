@@ -8,6 +8,8 @@ import { OrderDetails } from "src/orders/entities/orderdetail.entity";
 import { ProductRefDto } from "./dto/orders.dto";
 @Injectable()
 export class OrdersRepository {
+    dataSource: any;
+  
     constructor(
         @InjectRepository(Orders)
         private ordersRepository: Repository<Orders>,
@@ -78,5 +80,65 @@ export class OrdersRepository {
             }
             return order;
         }
+
+    /* async deleteOrder(id: string) {
+        const order = await this.ordersRepository.findOneBy({ id });
+
+        if (!order) {
+            throw new NotFoundException(`Orden con id ${id} no encontrada`);
+        }
+
+        await this.ordersRepository.delete(id);
+
+        const orderDetails = await this.orderDetailRepository.findOne({
+            where: { order: { id } },
+            relations: { products: true },
+        });
+
+        if (orderDetails && orderDetails.products) {
+            await Promise.all(orderDetails.products.map(async (element) => {
+                const product = await this.productsRepository.findOneBy({id: element.id});
+                if (!product) {
+                    throw new NotFoundException(`Producto con id ${element.id} no encontrado`);
+                }
+
+                await this.productsRepository.update({id: element.id}, {stock: product.stock - 1});
+            }));
+        }
+
+    } */
+
+        async deleteOrder(id: string) {
+    return this.dataSource.transaction(async (trx) => {
+      // 1) Cargar la orden con detalles y producto
+      const order = await trx.findOne(Orders, {
+        where: { id },
+        relations: ['details', 'details.product']
+        // alternativamente: relations: ['details', 'details.product']
+      });
+      if (!order) throw new NotFoundException(`Orden con id ${id} no encontrada`);
+
+      // (Opcional) políticas: impedir borrado por estado
+      // if (order.status === 'SHIPPED') throw new BadRequestException('No se puede borrar...');
+
+      // 2) Devolver stock
+      for (const det of order.details) {
+        await trx.increment(Products, { id: det.product.id }, 'stock', det.quantity);
+      }
+
+      // 3) Borrar detalles (libera la FK)
+      await trx.delete(OrderDetails, { order: { id } });
+
+      // Si tu versión no acepta nested where, usa QueryBuilder:
+      // await trx.createQueryBuilder().delete().from(OrderDetails)
+      //   .where('orderId = :id', { id }).execute();
+
+      // 4) Borrar la orden
+      await trx.delete(Orders, { id });
+
+      return { deleted: true };
+    });
+  }
 }
+
 

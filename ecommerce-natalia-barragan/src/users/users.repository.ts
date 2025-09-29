@@ -32,7 +32,7 @@ export class UsersRepository {
   }
 
   async addUser(user: Partial<Users>) {
-    const { confirmPassword, isAdmin, ...rest } = user as any;
+    const { isAdmin, ...rest } = user as any;
 
     const newUser = await this.userRepository.save({...rest});
     const dbUser = await this.userRepository.findOneBy({ id: newUser.id });

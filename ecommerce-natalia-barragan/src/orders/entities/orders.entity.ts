@@ -17,7 +17,9 @@ export class Orders {
     @Column()
     date: Date;
 
-    @OneToOne(() => OrderDetails, (orderDetails) => orderDetails.order)
+    @OneToOne(() => OrderDetails, (orderDetails) => orderDetails.order, {
+      cascade: false
+    })
     orderDetails: OrderDetails;
 
     @ManyToOne(() => Users, (user) => user.orders)
